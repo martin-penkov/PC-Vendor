@@ -1,0 +1,32 @@
+<?php
+session_start();
+// Определяне на базовия път според това дали сме в поддиректория
+$basePath = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
+?>
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Компютърни части - <?php echo isset($pageTitle) ? $pageTitle : 'Магазин'; ?></title>
+    <link rel="stylesheet" href="<?php echo $basePath; ?>assets/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <h1>🖥️ Компютърни части</h1>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="<?php echo $basePath; ?>index.php">Начало</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/products.php">Продукти</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/add_product.php">Добави продукт</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/search.php">Търсене</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main class="main-content">
+
