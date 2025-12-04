@@ -21,7 +21,6 @@ try {
         exit;
     }
 
-    // Проверка дали продуктът съществува
     $checkSql = "SELECT id FROM products WHERE id = ?";
     $checkStmt = $conn->prepare($checkSql);
     $checkStmt->bind_param('i', $id);
@@ -37,7 +36,6 @@ try {
     }
     $checkStmt->close();
 
-    // DELETE операция с prepared statement
     $sql = "DELETE FROM products WHERE id = ?";
     $stmt = $conn->prepare($sql);
     

@@ -12,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 try {
-    // Валидация и екраниране
     $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
     $name = isset($_POST['name']) ? sanitizeInput($_POST['name'], $conn) : '';
     $category = isset($_POST['category']) ? sanitizeInput($_POST['category'], $conn) : '';
@@ -23,7 +22,6 @@ try {
 
     $errors = [];
 
-    // Валидация
     if ($id <= 0) {
         $errors['id'] = 'Невалидно ID на продукт.';
     }
@@ -54,7 +52,6 @@ try {
         exit;
     }
 
-    // Проверка дали продуктът съществува
     $checkSql = "SELECT id FROM products WHERE id = ?";
     $checkStmt = $conn->prepare($checkSql);
     $checkStmt->bind_param('i', $id);
@@ -70,7 +67,6 @@ try {
     }
     $checkStmt->close();
 
-    // UPDATE операция с prepared statement
     $sql = "UPDATE products SET name = ?, category = ?, price = ?, description = ?, stock = ?, image = ? WHERE id = ?";
     $stmt = $conn->prepare($sql);
     

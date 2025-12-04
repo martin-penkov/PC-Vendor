@@ -10,7 +10,6 @@ try {
     $params = [];
     $types = '';
 
-    // SELECT WHERE - по ID
     if (isset($_GET['id']) && !empty($_GET['id'])) {
         $id = intval($_GET['id']);
         $whereConditions[] = "id = ?";
@@ -18,7 +17,6 @@ try {
         $types .= 'i';
     }
 
-    // SELECT WHERE - по категория
     if (isset($_GET['category']) && !empty($_GET['category'])) {
         $category = sanitizeInput($_GET['category'], $conn);
         $whereConditions[] = "category = ?";
@@ -26,7 +24,6 @@ try {
         $types .= 's';
     }
 
-    // SELECT WHERE - търсене по име
     if (isset($_GET['search']) && !empty($_GET['search'])) {
         $search = sanitizeInput($_GET['search'], $conn);
         $whereConditions[] = "(name LIKE ? OR description LIKE ?)";
@@ -36,7 +33,6 @@ try {
         $types .= 'ss';
     }
 
-    // SELECT WHERE - минимална цена
     if (isset($_GET['min_price']) && !empty($_GET['min_price'])) {
         $minPrice = floatval($_GET['min_price']);
         $whereConditions[] = "price >= ?";
@@ -44,7 +40,6 @@ try {
         $types .= 'd';
     }
 
-    // SELECT WHERE - максимална цена
     if (isset($_GET['max_price']) && !empty($_GET['max_price'])) {
         $maxPrice = floatval($_GET['max_price']);
         $whereConditions[] = "price <= ?";
@@ -52,7 +47,6 @@ try {
         $types .= 'd';
     }
 
-    // SELECT WHERE - минимална наличност
     if (isset($_GET['min_stock']) && !empty($_GET['min_stock'])) {
         $minStock = intval($_GET['min_stock']);
         $whereConditions[] = "stock >= ?";
@@ -60,7 +54,7 @@ try {
         $types .= 'i';
     }
 
-    // Изграждане на заявката
+    // 
     $sql = "SELECT * FROM products";
     
     if (!empty($whereConditions)) {
@@ -77,7 +71,6 @@ try {
         $types .= 'i';
     }
 
-    // Използване на prepared statements за защита
     $stmt = $conn->prepare($sql);
     
     if (!empty($params)) {

@@ -12,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 try {
-    // Валидация и екраниране на данните
     $name = isset($_POST['name']) ? sanitizeInput($_POST['name'], $conn) : '';
     $category = isset($_POST['category']) ? sanitizeInput($_POST['category'], $conn) : '';
     $price = isset($_POST['price']) ? floatval($_POST['price']) : 0;
@@ -22,7 +21,6 @@ try {
 
     $errors = [];
 
-    // Валидация
     if (empty($name)) {
         $errors['name'] = 'Името на продукта е задължително.';
     } elseif (strlen($name) > 255) {
@@ -49,7 +47,6 @@ try {
         exit;
     }
 
-    // INSERT операция с prepared statement
     $sql = "INSERT INTO products (name, category, price, description, stock, image) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     
