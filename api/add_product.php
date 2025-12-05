@@ -1,165 +1,75 @@
 <?php
-$pageTitle = 'Добави продукт';
-include '../includes/header.php';
+header('Content-Type: application/json; charset=utf-8');
+require_once '../config/database.php';
+
+$conn = getDBConnection();
+$response = ['success' => false, 'message' => '', 'errors' => []];
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    $response['message'] = 'Невалиден метод на заявка.';
+    echo json_encode($response, JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+try {
+    $name = isset($_POST['name']) ? sanitizeInput($_POST['name'], $conn) : '';
+    $category = isset($_POST['category']) ? sanitizeInput($_POST['category'], $conn) : '';
+    $price = isset($_POST['price']) ? floatval($_POST['price']) : 0;
+    $stock = isset($_POST['stock']) ? intval($_POST['stock']) : 0;
+    $description = isset($_POST['description']) ? sanitizeInput($_POST['description'], $conn) : '';
+    $image = isset($_POST['image']) ? sanitizeInput($_POST['image'], $conn) : '';
+
+    $errors = [];
+
+    if (empty($name)) {
+        $errors['name'] = 'Името на продукта е задължително.';
+    } elseif (strlen($name) > 255) {
+        $errors['name'] = 'Името е твърде дълго (максимум 255 символа).';
+    }
+
+    if (empty($category)) {
+        $errors['category'] = 'Категорията е задължителна.';
+    }
+
+    if ($price <= 0) {
+        $errors['price'] = 'Цената трябва да е положително число.';
+    }
+
+    if ($stock < 0) {
+        $errors['stock'] = 'Наличността не може да е отрицателна.';
+    }
+
+    if (!empty($errors)) {
+        $response['errors'] = $errors;
+        $response['message'] = 'Има грешки при валидацията.';
+        echo json_encode($response, JSON_UNESCAPED_UNICODE);
+        $conn->close();
+        exit;
+    }
+
+    $sql = "INSERT INTO products (name, category, price, description, stock, image) VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    
+    if (!$stmt) {
+        throw new Exception('Грешка при подготовка на заявката: ' . $conn->error);
+    }
+    
+    $stmt->bind_param('ssdsis', $name, $category, $price, $description, $stock, $image);
+    
+    if ($stmt->execute()) {
+        $response['success'] = true;
+        $response['message'] = 'Продуктът е добавен успешно!';
+        $response['id'] = $conn->insert_id;
+    } else {
+        throw new Exception('Грешка при изпълнение на заявката: ' . $stmt->error);
+    }
+    
+    $stmt->close();
+
+} catch (Exception $e) {
+    $response['message'] = 'Грешка при добавяне на продукта: ' . $e->getMessage();
+}
+
+$conn->close();
+echo json_encode($response, JSON_UNESCAPED_UNICODE);
 ?>
-
-<div class="container">
-    <div class="page-header">
-        <h1>Добави нов продукт</h1>
-        <a href="/products" class="btn btn-secondary">← Назад към продуктите</a>
-    </div>
-
-    <form id="addProductForm" class="product-form">
-        <div class="form-group">
-            <label for="name">Име на продукта *</label>
-            <input type="text" id="name" name="name" required>
-            <span class="error-message" id="nameError"></span>
-        </div>
-
-        <div class="form-group">
-            <label for="category">Категория *</label>
-            <select id="category" name="category" required>
-                <option value="">Избери категория</option>
-                <option value="Процесор">Процесор</option>
-                <option value="Видео карта">Видео карта</option>
-                <option value="Памет">Памет</option>
-                <option value="Твърд диск">Твърд диск</option>
-                <option value="Дънна платка">Дънна платка</option>
-                <option value="Захранване">Захранване</option>
-                <option value="Кутия">Кутия</option>
-            </select>
-            <span class="error-message" id="categoryError"></span>
-        </div>
-
-        <div class="form-group">
-            <label for="price">Цена (лв.) *</label>
-            <input type="number" id="price" name="price" step="0.01" min="0" required>
-            <span class="error-message" id="priceError"></span>
-        </div>
-
-        <div class="form-group">
-            <label for="stock">Наличност (бройки) *</label>
-            <input type="number" id="stock" name="stock" min="0" required>
-            <span class="error-message" id="stockError"></span>
-        </div>
-
-        <div class="form-group">
-            <label for="description">Описание</label>
-            <textarea id="description" name="description" rows="4"></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="image">Име на снимката</label>
-            <input type="text" id="image" name="image" placeholder="например: product_image.jpg">
-        </div>
-
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Запази продукт</button>
-            <button type="reset" class="btn btn-secondary">Изчисти</button>
-        </div>
-
-        <div id="formMessage" class="form-message"></div>
-    </form>
-</div>
-
-<script>
-$(document).ready(function() {
-    $('#addProductForm').on('submit', function(e) {
-        e.preventDefault();
-        clearErrors();
-        clearMessage();
-
-        if (!validateForm()) {
-            return;
-        }
-
-        const formData = {
-            name: $('#name').val(),
-            category: $('#category').val(),
-            price: $('#price').val(),
-            stock: $('#stock').val(),
-            description: $('#description').val(),
-            image: $('#image').val()
-        };
-
-        $.ajax({
-            url: '/api/add-product',
-            method: 'POST',
-            data: formData,
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    showMessage('Продуктът е добавен успешно!', 'success');
-                    $('#addProductForm')[0].reset();
-                    setTimeout(function() {
-                        window.location.href = '/products';
-                    }, 1500);
-                } else {
-                    showMessage(response.message || 'Грешка при добавяне на продукта.', 'error');
-                    if (response.errors) {
-                        displayErrors(response.errors);
-                    }
-                }
-            },
-            error: function() {
-                showMessage('Грешка при добавяне на продукта.', 'error');
-            }
-        });
-    });
-});
-
-function validateForm() {
-    let isValid = true;
-
-    if ($('#name').val().trim() === '') {
-        showError('name', 'Името на продукта е задължително.');
-        isValid = false;
-    }
-
-    if ($('#category').val() === '') {
-        showError('category', 'Категорията е задължителна.');
-        isValid = false;
-    }
-
-    const price = parseFloat($('#price').val());
-    if (isNaN(price) || price <= 0) {
-        showError('price', 'Цената трябва да е положително число.');
-        isValid = false;
-    }
-
-    const stock = parseInt($('#stock').val());
-    if (isNaN(stock) || stock < 0) {
-        showError('stock', 'Наличността трябва да е неотрицателно число.');
-        isValid = false;
-    }
-
-    return isValid;
-}
-
-function showError(field, message) {
-    $('#' + field + 'Error').text(message).show();
-    $('#' + field).addClass('error');
-}
-
-function clearErrors() {
-    $('.error-message').text('').hide();
-    $('.form-group input, .form-group select, .form-group textarea').removeClass('error');
-}
-
-function displayErrors(errors) {
-    for (let field in errors) {
-        showError(field, errors[field]);
-    }
-}
-
-function showMessage(message, type) {
-    const messageDiv = $('#formMessage');
-    messageDiv.removeClass('success error').addClass(type).text(message).show();
-}
-
-function clearMessage() {
-    $('#formMessage').text('').hide();
-}
-</script>
-
-<?php include '../includes/footer.php'; ?>

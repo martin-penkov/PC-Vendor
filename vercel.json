@@ -4,11 +4,11 @@
         "api/**/*.php": { "runtime": "vercel-php@0.7.4" }
     },
     "rewrites": [
-        { "source": "/", "destination": "/api/index.php" },
-        { "source": "/products", "destination": "/api/products.php" },
-        { "source": "/add-product", "destination": "/api/add_product.php" },
-        { "source": "/edit-product", "destination": "/api/edit_product.php" },
-        { "source": "/search", "destination": "/api/search.php" },
+        { "source": "/", "destination": "/api/index_page.php" },
+        { "source": "/products", "destination": "/api/products_page.php" },
+        { "source": "/add-product", "destination": "/api/add_product_page.php" },
+        { "source": "/edit-product", "destination": "/api/edit_product_page.php" },
+        { "source": "/search", "destination": "/api/search_page.php" },
         { "source": "/api/get-products", "destination": "/api/get_products.php" },
         { "source": "/api/add-product", "destination": "/api/add_product.php" },
         { "source": "/api/update-product", "destination": "/api/update_product.php" },
