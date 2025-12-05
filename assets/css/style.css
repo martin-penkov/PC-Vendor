@@ -100,7 +100,7 @@ body {
 }
 
 .btn-danger:hover {
-    background-color: #c82353333;
+    background-color: #c82323;
 }
 
 .btn-small {
@@ -211,7 +211,7 @@ body {
 .product-info h3 {
     font-size: 1.3rem;
     margin-bottom: 0.5rem;
-    color: #353533333;
+    color: #353333;
 }
 
 .product-category {
@@ -294,7 +294,7 @@ body {
 .form-group textarea {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #ffffff;
+    border: 1px solid #7e7e7e;
     border-radius: 5px;
     font-size: 1rem;
     font-family: inherit;
@@ -362,7 +362,7 @@ body {
 .filter-select,
 .filter-input {
     padding: 0.75rem;
-    border: 1px solid #ffffff;
+    border: 1px solid #888888;
     border-radius: 5px;
     font-size: 1rem;
     flex: 1;
@@ -391,7 +391,7 @@ body {
 .search-input {
     flex: 1;
     padding: 1rem;
-    border: 2px solid #ffffff;
+    border: 2px solid #555555;
     border-radius: 5px;
     font-size: 1.1rem;
 }
