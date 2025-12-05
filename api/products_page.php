@@ -91,7 +91,7 @@ function displayProducts(products, container) {
         html += `
             <div class="product-card" data-id="${product.id}">
                 <div class="product-image">
-                    ${product.image ? `<img src="../assets/images/${product.image}" alt="${product.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><div class="no-image" style="display:none;">Няма снимка</div>` : '<div class="no-image">Няма снимка</div>'}
+                    ${product.image ? `<img src="/assets/images/${product.image}" alt="${product.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><div class="no-image" style="display:none;">Няма снимка</div>` : '<div class="no-image">Няма снимка</div>'}
                 </div>
                 <div class="product-info">
                     <h3>${product.name}</h3>

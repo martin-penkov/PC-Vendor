@@ -6,6 +6,7 @@
     "rewrites": [
         { "source": "/", "destination": "/api/index_page.php" },
         { "source": "/products", "destination": "/api/products_page.php" },
+        { "source": "/api/products", "destination": "/api/products_page.php" },
         { "source": "/add-product", "destination": "/api/add_product_page.php" },
         { "source": "/edit-product", "destination": "/api/edit_product_page.php" },
         { "source": "/search", "destination": "/api/search_page.php" },
