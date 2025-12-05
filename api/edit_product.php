@@ -1,15 +1,22 @@
 <?php
-$pageTitle = 'Добави продукт';
+$pageTitle = 'Редактирай продукт';
 include '../includes/header.php';
+
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    header('Location: /products');
+    exit;
+}
 ?>
 
 <div class="container">
     <div class="page-header">
-        <h1>Добави нов продукт</h1>
+        <h1>Редактирай продукт</h1>
         <a href="/products" class="btn btn-secondary">← Назад към продуктите</a>
     </div>
 
-    <form id="addProductForm" class="product-form">
+    <form id="editProductForm" class="product-form">
+        <input type="hidden" id="productId" name="id" value="<?php echo htmlspecialchars($_GET['id']); ?>">
+        
         <div class="form-group">
             <label for="name">Име на продукта *</label>
             <input type="text" id="name" name="name" required>
@@ -54,8 +61,8 @@ include '../includes/header.php';
         </div>
 
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Запази продукт</button>
-            <button type="reset" class="btn btn-secondary">Изчисти</button>
+            <button type="submit" class="btn btn-primary">Запази промените</button>
+            <a href="/products" class="btn btn-secondary">Отказ</a>
         </div>
 
         <div id="formMessage" class="form-message"></div>
@@ -64,7 +71,10 @@ include '../includes/header.php';
 
 <script>
 $(document).ready(function() {
-    $('#addProductForm').on('submit', function(e) {
+    const productId = $('#productId').val();
+    loadProduct(productId);
+
+    $('#editProductForm').on('submit', function(e) {
         e.preventDefault();
         clearErrors();
         clearMessage();
@@ -74,6 +84,7 @@ $(document).ready(function() {
         }
 
         const formData = {
+            id: productId,
             name: $('#name').val(),
             category: $('#category').val(),
             price: $('#price').val(),
@@ -83,30 +94,54 @@ $(document).ready(function() {
         };
 
         $.ajax({
-            url: '/api/add-product',
+            url: '/api/update-product',
             method: 'POST',
             data: formData,
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
-                    showMessage('Продуктът е добавен успешно!', 'success');
-                    $('#addProductForm')[0].reset();
+                    showMessage('Продуктът е обновен успешно!', 'success');
                     setTimeout(function() {
                         window.location.href = '/products';
                     }, 1500);
                 } else {
-                    showMessage(response.message || 'Грешка при добавяне на продукта.', 'error');
+                    showMessage(response.message || 'Грешка при обновяване на продукта.', 'error');
                     if (response.errors) {
                         displayErrors(response.errors);
                     }
                 }
             },
             error: function() {
-                showMessage('Грешка при добавяне на продукта.', 'error');
+                showMessage('Грешка при обновяване на продукта.', 'error');
             }
         });
     });
 });
+
+function loadProduct(id) {
+    $.ajax({
+        url: '/api/get-products',
+        method: 'GET',
+        data: { id: id },
+        dataType: 'json',
+        success: function(response) {
+            if (response.success && response.data.length > 0) {
+                const product = response.data[0];
+                $('#name').val(product.name);
+                $('#category').val(product.category);
+                $('#price').val(product.price);
+                $('#stock').val(product.stock);
+                $('#description').val(product.description || '');
+                $('#image').val(product.image || '');
+            } else {
+                showMessage('Продуктът не е намерен.', 'error');
+            }
+        },
+        error: function() {
+            showMessage('Грешка при зареждане на продукта.', 'error');
+        }
+    });
+}
 
 function validateForm() {
     let isValid = true;
@@ -163,3 +198,4 @@ function clearMessage() {
 </script>
 
 <?php include '../includes/footer.php'; ?>
+

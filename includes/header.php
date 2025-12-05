@@ -1,6 +1,6 @@
 <?php
 session_start();
-$basePath = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
+$basePath = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false || strpos($_SERVER['PHP_SELF'], '/api/') !== false) ? '../' : '';
 ?>
 <!DOCTYPE html>
 <html lang="bg">
@@ -19,10 +19,10 @@ $basePath = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
             </div>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="<?php echo $basePath; ?>index.php">Начало</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/products.php">Продукти</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/add_product.php">Добави продукт</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/search.php">Търсене</a></li>
+                    <li><a href="/">Начало</a></li>
+                    <li><a href="/products">Продукти</a></li>
+                    <li><a href="/add-product">Добави продукт</a></li>
+                    <li><a href="/search">Търсене</a></li>
                 </ul>
             </nav>
         </div>

@@ -4,15 +4,14 @@
         "api/**/*.php": { "runtime": "vercel-php@0.7.4" }
     },
     "rewrites": [
-        { "source": "/", "destination": "/index.php" },
-        { "source": "/products", "destination": "/pages/products.php" },
-        { "source": "/add-product", "destination": "/pages/add_product.php" },
-        { "source": "/edit-product", "destination": "/pages/edit_product.php" },
-        { "source": "/search", "destination": "/pages/search.php" },
+        { "source": "/", "destination": "/api/index.php" },
+        { "source": "/products", "destination": "/api/products.php" },
+        { "source": "/add-product", "destination": "/api/add_product.php" },
+        { "source": "/edit-product", "destination": "/api/edit_product.php" },
+        { "source": "/search", "destination": "/api/search.php" },
         { "source": "/api/get-products", "destination": "/api/get_products.php" },
         { "source": "/api/add-product", "destination": "/api/add_product.php" },
         { "source": "/api/update-product", "destination": "/api/update_product.php" },
-        { "source": "/api/delete-product", "destination": "/api/delete_product.php" },
-        { "source": "/api/search", "destination": "/api/search.php" }
+        { "source": "/api/delete-product", "destination": "/api/delete_product.php" }
     ]
 }
