@@ -69,7 +69,6 @@ $(document).ready(function() {
         clearErrors();
         clearMessage();
 
-        // Валидация на клиентската страна
         if (!validateForm()) {
             return;
         }

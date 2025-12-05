@@ -1,16 +1,10 @@
-// Глобален JavaScript файл
-
 $(document).ready(function() {
-    // Анимации и интерактивност
     initializeAnimations();
     
-    // Общи функционалности
     initializeCommonFeatures();
 });
 
-// Инициализиране на анимации
 function initializeAnimations() {
-    // Анимация при навеждане на мишка върху карти с продукти
     $('.product-card').hover(
         function() {
             $(this).addClass('hovered');
@@ -20,7 +14,6 @@ function initializeAnimations() {
         }
     );
     
-    // Анимация при кликване на бутони
     $('.btn').on('click', function() {
         $(this).addClass('clicked');
         setTimeout(() => {
@@ -29,14 +22,11 @@ function initializeAnimations() {
     });
 }
 
-// Общи функционалности
 function initializeCommonFeatures() {
-    // Автоматично скриване на съобщения след 5 секунди
     setTimeout(function() {
         $('.form-message').fadeOut();
     }, 5000);
     
-    // Потвърждение при изтриване
     $('.delete-btn').on('click', function(e) {
         if (!confirm('Сигурни ли сте, че искате да изтриете този запис?')) {
             e.preventDefault();
@@ -44,7 +34,6 @@ function initializeCommonFeatures() {
         }
     });
     
-    // Валидация на числови полета
     $('input[type="number"]').on('input', function() {
         const value = parseFloat($(this).val());
         if (value < 0) {
@@ -53,7 +42,6 @@ function initializeCommonFeatures() {
     });
 }
 
-// Функция за показване на toast съобщения
 function showToast(message, type = 'info') {
     const toast = $('<div class="toast toast-' + type + '">' + message + '</div>');
     $('body').append(toast);
@@ -70,12 +58,10 @@ function showToast(message, type = 'info') {
     }, 3000);
 }
 
-// Функция за форматиране на цена
 function formatPrice(price) {
     return parseFloat(price).toFixed(2) + ' лв.';
 }
 
-// Функция за форматиране на дата
 function formatDate(dateString) {
     const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, '0');

@@ -46,7 +46,7 @@ include '../includes/header.php';
     </div>
 
     <div id="searchResults" class="products-grid">
-        <!-- Резултатите ще се покажат тук -->
+    
     </div>
 
     <div id="loadingMessage" class="loading-message">Зареждане...</div>
@@ -71,7 +71,6 @@ $(document).ready(function() {
         performSearch();
     });
 
-    // Зареждане на всички продукти при първо отваряне
     loadAllProducts();
 });
 

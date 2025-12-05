@@ -23,7 +23,7 @@ include '../includes/header.php';
     </div>
 
     <div id="productsContainer" class="products-grid">
-        <!-- Продуктите ще се заредят чрез Ajax -->
+    
     </div>
 
     <div id="loadingMessage" class="loading-message">Зареждане...</div>

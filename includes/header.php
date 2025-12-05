@@ -1,6 +1,5 @@
 <?php
 session_start();
-// Определяне на базовия път според това дали сме в поддиректория
 $basePath = (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) ? '../' : '';
 ?>
 <!DOCTYPE html>

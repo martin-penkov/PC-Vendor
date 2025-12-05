@@ -34,14 +34,13 @@ include 'includes/header.php';
     <section class="latest-products">
         <h2>Последни продукти</h2>
         <div id="latestProducts" class="products-grid">
-            <!-- Продуктите ще се заредят чрез Ajax -->
+        
         </div>
     </section>
 </div>
 
 <script>
 $(document).ready(function() {
-    // Зареждане на последните 4 продукта
     loadLatestProducts();
 });
 
