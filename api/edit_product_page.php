@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'Редактирай продукт';
-include '../includes/header.php';
+include __DIR__ . '/../includes/header.php';
 
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     header('Location: /products');
@@ -197,5 +197,5 @@ function clearMessage() {
 }
 </script>
 
-<?php include '../includes/footer.php'; ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>
 

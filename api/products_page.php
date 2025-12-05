@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'Продукти';
-include '../includes/header.php';
+include __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container">
@@ -142,5 +142,5 @@ function deleteProduct(id) {
 }
 </script>
 
-<?php include '../includes/footer.php'; ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>
 

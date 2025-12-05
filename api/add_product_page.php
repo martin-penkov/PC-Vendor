@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'Добави продукт';
-include '../includes/header.php';
+include __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container">
@@ -162,4 +162,4 @@ function clearMessage() {
 }
 </script>
 
-<?php include '../includes/footer.php'; ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>
