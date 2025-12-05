@@ -1,7 +1,9 @@
 <?php
 session_start();
-// Use absolute paths for Vercel
-$basePath = '';
+// Detect if running on Vercel or locally
+$isVercel = isset($_SERVER['VERCEL']) || strpos($_SERVER['HTTP_HOST'] ?? '', 'vercel.app') !== false;
+$basePath = $isVercel ? '' : '';
+$assetPath = $isVercel ? '/' : '';
 ?>
 <!DOCTYPE html>
 <html lang="bg">
@@ -9,7 +11,7 @@ $basePath = '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Компютърни части - <?php echo isset($pageTitle) ? $pageTitle : 'Магазин'; ?></title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo $assetPath; ?>assets/css/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -20,10 +22,10 @@ $basePath = '';
             </div>
             <nav class="main-nav">
                 <ul>
-                    <li><a href="/">Начало</a></li>
-                    <li><a href="/products">Продукти</a></li>
-                    <li><a href="/add-product">Добави продукт</a></li>
-                    <li><a href="/search">Търсене</a></li>
+                    <li><a href="<?php echo $isVercel ? '/' : 'index.php'; ?>">Начало</a></li>
+                    <li><a href="<?php echo $isVercel ? '/products' : 'products.php'; ?>">Продукти</a></li>
+                    <li><a href="<?php echo $isVercel ? '/add-product' : 'add_product.php'; ?>">Добави продукт</a></li>
+                    <li><a href="<?php echo $isVercel ? '/search' : 'search.php'; ?>">Търсене</a></li>
                 </ul>
             </nav>
         </div>
