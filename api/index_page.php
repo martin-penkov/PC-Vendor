@@ -40,9 +40,14 @@ include __DIR__ . '/../includes/header.php';
 </div>
 
 <script>
-$(document).ready(function() {
-    loadLatestProducts();
-});
+// Ensure jQuery is loaded
+if (typeof jQuery === 'undefined') {
+    console.error('jQuery is not loaded!');
+} else {
+    $(document).ready(function() {
+        loadLatestProducts();
+    });
+}
 
 function loadLatestProducts() {
     $.ajax({
@@ -53,10 +58,13 @@ function loadLatestProducts() {
         success: function(response) {
             if (response.success) {
                 displayProducts(response.data, '#latestProducts');
+            } else {
+                $('#latestProducts').html('<p class="no-results">' + (response.message || 'Няма налични продукти.') + '</p>');
             }
         },
-        error: function() {
-            $('#latestProducts').html('<p>Грешка при зареждане на продуктите.</p>');
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', status, error);
+            $('#latestProducts').html('<p class="no-results">Грешка при зареждане на продуктите. Моля, опитайте отново по-късно.</p>');
         }
     });
 }
